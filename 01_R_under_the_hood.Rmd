@@ -1,0 +1,55 @@
+---
+title: "R Under the Hood"
+author: "Federico Puppo"
+date: "20/06/2023"
+output:
+  rmarkdown::html_vignette:
+    toc: true
+    toc_depth: 2
+vignette: >
+  %\VignetteIndexEntry{R Under the Hood}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+R is an interpreted programming language that works by executing code line by line. Behind the scenes, R follows a series of steps to interpret and execute the code:
+
+## Parsing
+
+When you run an R script or command, the code is first parsed. Parsing involves breaking down the code into meaningful expressions and identifying its components, such as variables, functions, operators, and control structures.
+
+## Abstract Syntax Tree (AST)
+
+After parsing, R constructs an Abstract Syntax Tree (AST) from the parsed code. The AST represents the structure and relationships between the different components of the code.
+
+## Evaluation
+
+R proceeds to evaluate the AST node by node. It starts with the top-level expression and recursively evaluates each node, following the program's control flow. This evaluation process involves executing the instructions specified in the code, manipulating data, and updating variables and objects.
+
+## Symbol Lookup
+
+During evaluation, R performs symbol lookup to resolve variable names and function calls. It searches for the corresponding bindings in the current environment, and if not found, it looks up the enclosing environments until it reaches the global environment.
+
+## Memory Management
+
+R manages memory dynamically. It allocates memory to store objects, such as vectors, matrices, data frames, and functions, as they are created during code execution. R also automatically frees up memory when objects are no longer referenced or when the garbage collector is triggered.
+
+## Automatic Type Inference
+
+R is a dynamically typed language, meaning variable types are inferred at runtime. As values are assigned to variables, R determines their types based on the assigned values. This allows flexibility in working with different data types without explicit type declarations.
+
+## Dispatch and Method Resolution
+
+R supports generic functions and method dispatch. When a generic function is called with an object, R determines the appropriate method to execute based on the object's class and the function's dispatch mechanism. This enables polymorphism and facilitates object-oriented programming in R.
+
+## External Libraries
+
+R provides extensive functionality through external libraries or packages. These packages contain pre-defined functions and data structures for specific tasks or domains. When you use functions from these packages, R loads the required libraries and accesses their functionalities.
+
+## Error Handling
+
+If an error occurs during code execution, R generates an error message and halts the execution. You can employ error handling techniques like try-catch blocks or condition handling functions (e.g., try(), tryCatch()) to handle and recover from errors gracefully.
+
+## Output and Results
+
+R can produce output and results in various forms. It can print messages, warnings, and errors to the console. It generates plots, charts, and visualizations. It also returns values or objects as the result of a function or expression, which you can assign to variables or use in subsequent code.
