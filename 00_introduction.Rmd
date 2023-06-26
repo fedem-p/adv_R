@@ -1,4 +1,16 @@
-# Advanced R
+---
+title: "Advanced R"
+author: "Federico Puppo"
+date: "20/06/2023"
+output:
+  rmarkdown::html_vignette:
+    toc: true
+    toc_depth: 2
+vignette: >
+  %\VignetteIndexEntry{Advanced R}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
 
 A brief repo exploring the main topics to master advanced R programming
 
@@ -56,3 +68,9 @@ A brief repo exploring the main topics to master advanced R programming
 - Web Scraping and APIs:
   - Access data from websites and APIs using R.
   - Learn about packages like rvest and httr for web scraping and API interactions.
+  
+## References
+
+- [The R Inferno](https://www.burns-stat.com/pages/Tutor/R_inferno.pdf)
+- [The R language definition](https://colinfay.me/r-language-definition/index.html)
+- [Advanced R](https://adv-r.hadley.nz/)
