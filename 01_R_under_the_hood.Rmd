@@ -12,35 +12,130 @@ vignette: >
   %\VignetteEncoding{UTF-8}
 ---
 
-R is an interpreted programming language that works by executing code line by line. Behind the scenes, R follows a series of steps to interpret and execute the code:
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>"
+)
+```
+
+R is an interpreted programming language that works by executing code line by line. Behind the scenes, R follows a series of steps to interpret and execute the code.
+
+```{r}
+x <- 3.14   # init for later use
+```
 
 ## Parsing
 
-When you run an R script or command, the code is first parsed. Parsing involves breaking down the code into meaningful expressions and identifying its components, such as variables, functions, operators, and control structures.
+When you run an R script or command, the code is first parsed. Parsing involves breaking down the code into meaningful expressions and identifying its components (also called Tokens), such as variables, functions, operators, and control structures. The parser then applies a set of rules defined by the R language grammar to understand the structure and meaning of the code. It uses these rules to build an abstract syntax tree (AST), which represents the hierarchical structure of the code.
 
 ## Abstract Syntax Tree (AST)
 
-After parsing, R constructs an Abstract Syntax Tree (AST) from the parsed code. The AST represents the structure and relationships between the different components of the code.
+After parsing, R constructs an Abstract Syntax Tree (AST) from the parsed code. When the R parser reads and analyzes the code, it applies a set of rules defined by the R language grammar to construct the AST. The AST serves as an intermediate representation of the code that allows R to understand the code's structure and perform subsequent operations.
+
+Each node in the AST corresponds to a specific element or construct in the code, such as a function call or an if statement. The nodes are interconnected in\* a tree-like structure, with parent-child relationships representing the code's hierarchical organization.
+
+For example, a code snippet like the one below,
+
+```{r}
+x <- 3 * x + 1
+```
+
+would be represented in a AST as such:
+```
+     =
+   /   \
+  x     +
+      /   \
+     *    1
+    / \
+   3   x
+```
+
+There are packages that allow you to visualize the abstract syntax tree of an expression, such as [lobstr](https://lobstr.r-lib.org/).
 
 ## Evaluation
 
-R proceeds to evaluate the AST node by node. It starts with the top-level expression and recursively evaluates each node, following the program's control flow. This evaluation process involves executing the instructions specified in the code, manipulating data, and updating variables and objects.
+When the evaluation process begins, R starts at the root node of the AST and recursively traverses through the tree, evaluating expressions and executing statements as it encounters them. Here is a high-level overview of the evaluation process in R:
+
+1. **Variable Binding**: If the AST contains variable assignments or function definitions, R binds the corresponding values or functions to the associated symbols in the current environment. This step establishes the context for subsequent evaluations.
+
+2. **Expression Evaluation**: R evaluates expressions by recursively traversing the AST. It evaluates sub-expressions and combines their results according to the operators and function calls present in the code. For example, in the expression `2 + 3 * 4`, R would first evaluate `3 * 4` and then add the result to `2`.
+
+3. **Function Calls**: When encountering a function call in the AST, R evaluates the arguments by recursively evaluating their corresponding expressions. It then looks up the function definition associated with the function name and executes the function's body using the evaluated arguments. The result of the function call is returned and used in further evaluations if needed.
+
+4. **Control Flow Statements**: R handles control flow statements like conditionals (`if`, `else if`, `else`) and loops (`for`, `while`) by evaluating the condition expressions and executing the associated blocks of code based on the evaluation results. This allows R to perform different actions based on specific conditions or repeatedly execute code until certain conditions are met.
+
+5. **Output and Side Effects**: During the evaluation process, R may produce output, such as printing values to the console, generating plots, or modifying objects or files. These side effects are performed as the code is executed, alongside the evaluation of expressions and statements.
+
+The evaluation process continues until all nodes in the AST have been visited and the code execution completes. The resulting values, output, and modifications made during the evaluation are visible to the user and can be used for further analysis or computations.
 
 ## Symbol Lookup
 
-During evaluation, R performs symbol lookup to resolve variable names and function calls. It searches for the corresponding bindings in the current environment, and if not found, it looks up the enclosing environments until it reaches the global environment.
+When R encounters a symbol in an expression or statement, it performs a lookup to determine the corresponding value or function definition.
+
+The symbol lookup process in R follows a set of scoping rules that determine the order in which R searches for symbols. These scoping rules help R determine the environment in which the symbol is defined and where to find its associated value or function definition. Here are the key steps involved in the symbol lookup process:
+
+1. **Current Environment**: R first checks the current environment (also known as the local environment) where the symbol is being referenced. This environment is typically the execution environment of the currently running function or the global environment if the symbol is referenced outside of any function. If the symbol is found in the current environment, its associated value or definition is retrieved.
+
+2. **Enclosing Environments**: If the symbol is not found in the current environment, R proceeds to search the enclosing environments. These environments include the environments of parent functions (if applicable) and the global environment. R traverses the chain of enclosing environments, moving from the innermost environment to the outermost environment, until the symbol is found or the search reaches the global environment.
+
+3. **Package Environments**: If the symbol is not found in the current or enclosing environments, R checks the package environments. R maintains a list of loaded packages, and each package has its own environment that contains the symbols defined within that package. R searches the package environments in the order of package loading to find the symbol.
+
+4. **Base Environment**: If the symbol is still not found in the current, enclosing, or package environments, R checks the base environment. The base environment contains the built-in functions and variables provided by R itself. This is the last resort for symbol lookup.
+
+If the symbol is not found in any of the above steps, R generates an error indicating that the symbol is not defined.
+
+*It's important to note that R uses lexical scoping, which means that the search for a symbol's value or definition follows the hierarchy of environments defined by the code structure rather than the runtime execution context. This scoping behavior allows R to handle nested functions and closures, where symbols are resolved based on their lexical context.*
 
 ## Memory Management
 
 R manages memory dynamically. It allocates memory to store objects, such as vectors, matrices, data frames, and functions, as they are created during code execution. R also automatically frees up memory when objects are no longer referenced or when the garbage collector is triggered.
 
+Here's an overview of how memory management works in R:
+
+1. **Memory Allocation**: When R needs memory to store objects, it dynamically allocates memory from the operating system heap. R manages memory in chunks called "vectors," which can be single values, arrays, or more complex data structures. The size of these vectors depends on the type and structure of the objects being stored.
+
+2. **Reference Counting**: R uses a reference counting mechanism to keep track of how many objects are referencing a particular memory chunk. Each memory chunk has a reference count associated with it, which is incremented when a new reference to the chunk is created and decremented when a reference is removed or goes out of scope. When the reference count reaches zero, it means no objects are referencing the memory, and it can be safely deallocated.
+
+3. **Garbage Collection**: In addition to reference counting, R employs a mark-and-sweep garbage collection algorithm to reclaim memory that is no longer in use. Garbage collection identifies objects that are no longer reachable from the global environment or any active execution stack. The process involves traversing the object graph, starting from the roots (such as global variables and active stack frames), and marking all objects that are still reachable. The remaining unmarked objects are considered garbage and can be safely deallocated.
+
+4. **Memory Deallocation**: Once the garbage collection process has identified and marked the unreachable objects, R can safely deallocate the memory occupied by these objects. Memory deallocation involves releasing the memory back to the operating system, making it available for reuse by future memory allocations.
+
+5. **Automatic Memory Management**: R's memory management is automatic and transparent to the user. The runtime environment handles memory allocation, reference counting, garbage collection, and deallocation behind the scenes. Users do not need to manually allocate or deallocate memory for objects in R, as memory management is handled automatically by the interpreter.
+
 ## Automatic Type Inference
 
-R is a dynamically typed language, meaning variable types are inferred at runtime. As values are assigned to variables, R determines their types based on the assigned values. This allows flexibility in working with different data types without explicit type declarations.
+R is a dynamically typed language, meaning variable types are inferred at runtime. Here's how automatic type inference works in R:
+
+1. **Initialization**: When a variable is created in R, either explicitly or implicitly, it is initially assigned a type based on the value assigned to it. For example, if a variable is assigned a numeric value like `x <- 10`, R infers that `x` is of type numeric.
+
+2. **Type Coercion**: In R, type coercion occurs when operations or functions require inputs of specific types. If an operation involves operands of different types, R will automatically convert or coerce the operands to a common type. For example, if you perform arithmetic with a numeric value and a character value, R will attempt to convert the character value to numeric before performing the operation.
+
+3. **Dynamic Type Checking**: During execution, R dynamically checks the types of variables and objects at runtime when operations or functions are invoked. If a type mismatch is detected, R may raise an error or attempt to perform implicit type conversions if possible.
+
+4. **Type Inference through Context**: R's automatic type inference is also influenced by the context in which variables and objects are used. For example, if a variable `x` is used in an arithmetic operation with other numeric variables, R infers that `x` should be treated as a numeric type.
+
+5. **Polymorphic Functions**: R's dynamic typing allows functions to accept arguments of different types and perform different operations based on the type of the input. Polymorphic functions in R can adapt their behavior based on the types of the arguments, providing flexibility and enabling generic programming.
+
+It's important to note that automatic type inference in R does not impose strict type constraints on variables. R's flexibility allows variables to change their types dynamically during program execution. While this flexibility can be convenient, *it also means that type errors may not be caught until runtime, potentially leading to unexpected behavior or errors.*
 
 ## Dispatch and Method Resolution
 
-R supports generic functions and method dispatch. When a generic function is called with an object, R determines the appropriate method to execute based on the object's class and the function's dispatch mechanism. This enables polymorphism and facilitates object-oriented programming in R.
+Its the process of determining which function implementation, known as a method, should be invoked when a generic function is called with specific arguments.
+R employs a mechanism called "multiple dispatch" to select the appropriate method based on the types and classes of the function arguments. Here's an explanation of dispatch and method resolution in R:
+
+1. **Generic Functions**: In R, a generic function is a function that can have different implementations or methods depending on the types of its arguments. Generic functions are defined with a common name and typically have a default method that serves as a fallback when a more specific method is not available. Examples of generic functions in R include `print()`, `summary()`, and `plot()`.
+
+2. **Method Dispatch**: When a generic function is called, R performs method dispatch to determine which method implementation to invoke based on the types and classes of the arguments. R examines the arguments provided to the function and their classes to select the most appropriate method.
+
+3. **Method Resolution**: The method resolution process involves searching for a matching method implementation based on the argument types and classes. R follows a specific order in searching for methods, known as the Method Resolution Order (MRO). The MRO considers the inheritance hierarchy of classes and looks for methods in the order of inheritance. This ensures that methods defined for specific subclasses take precedence over more general methods.
+
+4. **Multiple Dispatch**: R supports multiple dispatch, which means that the method resolution process takes into account the types and classes of all the arguments, not just a single argument. This allows R to select the most specific method implementation based on the combination of argument types. For example, if a generic function has methods defined for classes A and B, and the function is called with arguments of class A and B, R will select the method that specifically handles the combination of A and B.
+
+5. **S3 and S4 Systems**: R has two main systems for method dispatch and resolution: the S3 system and the S4 system. The S3 system is simpler and more flexible, based on informal naming conventions and the use of class attributes. The S4 system, on the other hand, provides a more formal and structured approach to defining classes and methods.
+
+By employing dispatch and method resolution, R allows for polymorphism, where the behavior of a function can vary depending on the types and classes of the arguments.
 
 ## External Libraries
 
@@ -48,7 +143,21 @@ R provides extensive functionality through external libraries or packages. These
 
 ## Error Handling
 
-If an error occurs during code execution, R generates an error message and halts the execution. You can employ error handling techniques like try-catch blocks or condition handling functions (e.g., try(), tryCatch()) to handle and recover from errors gracefully.
+Here's an overview of how R handles code errors behind the scenes:
+
+1. **Error Detection**: the interpreter generates an error object that contains information about the error.
+
+2. **Error Signaling**: raises an error signal, which interrupts the normal flow of execution.
+
+3. **Error Handling Mechanism**: search for an appropriate error handler to process the error.
+
+4. **Error Handler Execution**: invokes the corresponding error handling code or function. The error handler receives the error object as an argument, allowing it to access information about the error. The error handler can perform actions such as displaying error messages, logging information, initiating error recovery, or terminating the program if necessary.
+
+5. **Error Message Display**: By default, R displays an error message containing information about the error.
+
+6. **Stack Unwinding**: the execution stack is unwound or rolled back to a point where the error can be handled. This allows for the cleanup of resources and the restoration of the program state to a consistent state before the error occurred.
+
+7. **Error Reporting and Recovery**: R may continue executing the remaining code or may terminate the program if the error is severe.
 
 ## Output and Results
 
