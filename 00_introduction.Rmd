@@ -12,14 +12,19 @@ vignette: >
   %\VignetteEncoding{UTF-8}
 ---
 
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>"
+)
+```
+
 A brief repo exploring the main topics to master advanced R programming
 
 ## Topics
 
-- R behind the scenes.
-- Functional Programming:
-  - Understand the principles of functional programming in R.
-  - Leverage higher-order functions, closures, and function composition for concise and reusable code.
+- [R behind the scenes](01_R_under_the_hood.html).
+- [Functional Programming](02_functional_programming.html)
 - Object-Oriented Programming (OOP):
   - Explore OOP concepts in R.
   - Learn about S3,S4 and S6 object systems for creating custom classes and methods.
