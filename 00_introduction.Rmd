@@ -25,7 +25,7 @@ A brief repo exploring the main topics to master advanced R programming
 
 - [R behind the scenes](01_R_under_the_hood.html).
 - [Functional Programming](02_functional_programming.html)
-- Object-Oriented Programming (OOP):
+- [Object-Oriented Programming (OOP)](03_object_oriented_programming.html):
   - Explore OOP concepts in R.
   - Learn about S3,S4 and S6 object systems for creating custom classes and methods.
 - Efficient Data Manipulation:
