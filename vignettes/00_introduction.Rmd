@@ -23,13 +23,11 @@ A brief repo exploring the main topics to master advanced R programming
 
 ## Topics
 
-- [R behind the scenes](01_R_under_the_hood.html).
+- [R behind the scenes](01_R_under_the_hood.html)
 - [Functional Programming](02_functional_programming.html)
 - [Object-Oriented Programming (OOP)](03_object_oriented_programming.html)
-- [Efficient Data Manipulation](04_efficient_data_manipulation.html):
-- [Parallel Computing](05_parallel_computing.html):
-  - Utilize parallel computing techniques to speed up computations.
-  - Discover packages like parallel, foreach, and future for efficient parallelization.
+- [Efficient Data Manipulation](04_efficient_data_manipulation.html)
+- [Parallel Computing](05_parallel_computing.html)
 - Memory Management:
   - Gain insights into efficient memory management in R.
   - Learn about memory profiling, garbage collection control, and memory allocation techniques.

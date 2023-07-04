@@ -1,0 +1,18 @@
+## First Projects
+
+Do at least one of the following:
+
+1. **Parallelized Data Processing and Visualization**:
+   - Goal: Develop a Shiny application that performs parallelized data processing and visualization tasks on a large dataset.
+   - Description: Start by selecting a dataset with a significant amount of data. Utilize parallel programming techniques, such as the `parallel` or `future` package, to speed up data processing tasks like filtering, summarizing, or modeling. Implement efficient data manipulation techniques using `data.table` or `dplyr`. Use Shiny to create an interactive interface where users can choose different data processing operations and visualize the results using advanced plots like interactive maps, scatterplots, or hierarchical visualizations.
+   - Where to Start: Begin by selecting a suitable dataset and familiarize yourself with parallel programming techniques in R. Explore efficient data manipulation with packages like `data.table` or `dplyr`. Learn Shiny to create an interactive user interface. Combine these skills to build the parallelized data processing and visualization Shiny application.
+
+2. **Interactive Machine Learning Model Comparison**:
+   - Goal: Build a Shiny application that allows users to compare and evaluate different machine learning models on a given dataset.
+   - Description: Start by selecting a dataset suitable for machine learning tasks. Implement various machine learning algorithms using classes and functions in R, such as `caret` or `mlr`. Utilize functional programming concepts to streamline the model evaluation process. Develop a Shiny application where users can upload a dataset, choose different models, tune hyperparameters, and evaluate model performance with interactive visualizations like ROC curves, precision-recall curves, or confusion matrices. Incorporate parallel programming techniques to speed up model training and evaluation.
+   - Where to Start: Begin by exploring machine learning algorithms in R and understanding the basics of model evaluation. Familiarize yourself with functional programming concepts to efficiently compare and evaluate models. Learn how to build interactive visualizations using Shiny. Combine these skills to develop the interactive machine learning model comparison Shiny application.
+
+3. **Advanced Financial Data Analysis and Visualization**:
+   - Goal: Create a Shiny application that performs advanced financial data analysis and visualization using real-world financial datasets.
+   - Description: Start by obtaining financial datasets, such as stock prices, economic indicators, or portfolio data. Apply advanced data manipulation techniques using packages like `quantmod` or `xts` to clean and preprocess the financial data. Utilize parallel programming to speed up computations for tasks like calculating portfolio returns or risk measures. Implement custom classes and functions to encapsulate financial calculations and visualizations. Build a Shiny application where users can explore and analyze the financial data, perform calculations, visualize trends, and generate interactive financial charts, such as candlestick charts, correlation matrices, or portfolio performance visualizations.
+   - Where to Start: Begin by acquiring real-world financial datasets and familiarize yourself with financial data manipulation techniques in R. Learn about parallel programming in the context of financial computations. Develop custom classes and functions to encapsulate financial calculations. Master advanced visualization techniques using packages like `plotly` or `ggplot2`. Combine these skills to create the advanced financial data analysis and visualization Shiny application.
