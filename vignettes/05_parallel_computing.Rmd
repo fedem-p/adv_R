@@ -1,0 +1,147 @@
+---
+title: "Parallel Computing"
+author: "Federico Puppo"
+date: "03/07/2023"
+output:
+  rmarkdown::html_vignette:
+    toc: true
+    toc_depth: 2
+vignette: >
+  %\VignetteIndexEntry{Parallel Computing}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>"
+)
+```
+
+To master parallel programming in R, there are several key concepts to understand and apply effectively. Here are the main points along with code examples:
+
+1. **Parallelizing Loops**:
+   - Utilize parallel processing to distribute loop iterations across multiple cores.
+   - Example using `foreach` and `%dopar%` from the `foreach` package:
+
+```R
+library(foreach)
+library(doParallel)
+
+# Set up parallel backend
+cores <- 4  # Number of cores to use
+cl <- makeCluster(cores)
+registerDoParallel(cl)
+
+# Parallelized loop
+result <- foreach(i = 1:10, .combine = c) %dopar% {
+  # Perform computations for each iteration
+  i * i
+}
+
+# Stop the parallel backend
+stopCluster(cl)
+```
+
+In this example, the loop iterations from 1 to 10 are distributed across four cores using `%dopar%`. Each iteration performs a computation (squaring the value) independently in parallel. The results are combined into a single vector using `.combine = c`.
+
+2. **Parallelizing Apply Family Functions**:
+   - Apply parallel processing to apply functions across multiple elements in parallel.
+   - Example using `mclapply` from the `parallel` package:
+
+```R
+library(parallel)
+
+# Set up parallel processing
+cores <- 4  # Number of cores to use
+
+# Parallelized apply function
+result <- mclapply(1:10, function(x) {
+  # Perform computations for each element
+  x * x
+}, mc.cores = cores)
+```
+
+In this example, the function `x * x` is applied to each element of the vector 1:10 using `mclapply`. The computations are performed in parallel across four cores (`mc.cores = cores`). The results are returned as a list.
+
+3. **Shared Memory Parallelism**:
+   - Utilize shared memory parallelism to improve performance for certain operations.
+   - Example using the `parallel` package and `parLapply`:
+
+```R
+library(parallel)
+
+# Set up parallel processing
+cores <- 4  # Number of cores to use
+cl <- makeCluster(cores)
+
+# Parallelized lapply with shared memory
+result <- parLapply(cl, 1:10, function(x) {
+  # Perform computations for each element
+  x * x
+})
+
+# Stop the parallel backend
+stopCluster(cl)
+```
+
+In this example, `parLapply` from the `parallel` package is used to apply the function `x * x` to each element of the vector 1:10. The computations are distributed across four cores, and the results are returned as a list.
+
+## Main Libraries
+
+1. **`parallel`**:
+The `parallel` package is a core package in R that provides support for parallel computing. It offers functions for parallelizing computations using shared memory or distributed computing.
+
+| Strengths                                                                                                                                                                                                                                           | Weaknesses                                                                                                                           |
+| --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------ |
+| - Built-in package with R, so no additional installation required. <br> - Provides various functions for parallel computing, such as `mclapply()`, `parLapply()`, and `clusterApply()`. <br> - Supports both shared memory and cluster parallelism. | - Requires manual setup and management of parallel backends. <br> - Limited support for more advanced parallel programming concepts. |
+
+```R
+library(parallel)
+
+# Parallelized computation using mclapply()
+result <- mclapply(1:10, function(x) {
+  x * x
+}, mc.cores = 4)
+```
+
+2. **`foreach`**:
+The `foreach` package provides a higher-level interface for parallel programming in R. It simplifies the process of parallelizing loops and applying functions in parallel.
+
+| Strengths                                                                                                                                                                                                                                      | Weaknesses                                                                                                                       |
+| ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------- |
+| - Offers a simpler and more intuitive syntax for parallel programming. <br>     - Integrates well with other parallel backends, such as `doParallel` and `doSNOW`. <br>     - Supports parallelizing loops and applying functions in parallel. | - Requires additional installation of parallel backends. <br> - Limited to parallelizing loop iterations and applying functions. |
+
+```R
+library(foreach)
+library(doParallel)
+
+# Set up parallel backend
+registerDoParallel(cores = 4)
+
+# Parallelized loop using foreach()
+result <- foreach(i = 1:10, .combine = c) %dopar% {
+  i * i
+}
+```
+
+3. **`future`**:
+The `future` package introduces a unified framework for asynchronous and parallel computing in R. It allows seamless switching between sequential and parallel execution, supporting multiple parallel backends.
+
+| Strengths                                                                                                                                                                                                                                                             | Weaknesses                                                                                                                              |
+| --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------- |
+| - Offers a unified and consistent framework for parallel computing. <br> - Supports various parallel backends, including multicore, multisession, and distributed computing platforms. <br> - Provides high-level functions like `future_apply()` and `future_map()`. | - Requires additional setup and installation of parallel backends. <br> - May have a steeper learning curve compared to other packages. |
+|                                                                                                                                                                                                                                                                       |
+
+```R
+library(future)
+
+# Set up parallel backend
+plan(multisession, workers = 4)
+
+# Parallelized computation using future_apply()
+result <- future_apply(1:10, function(x) {
+  x * x
+})
+```
