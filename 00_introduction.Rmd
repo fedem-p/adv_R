@@ -27,9 +27,7 @@ A brief repo exploring the main topics to master advanced R programming
 - [Functional Programming](02_functional_programming.html)
 - [Object-Oriented Programming (OOP)](03_object_oriented_programming.html)
 - [Efficient Data Manipulation](04_efficient_data_manipulation.html):
-  - Master data manipulation using packages like dplyr and data.table.
-  - Optimize operations such as filtering, selecting, and transforming data.
-- Parallel Computing:
+- [Parallel Computing](05_parallel_computing.html):
   - Utilize parallel computing techniques to speed up computations.
   - Discover packages like parallel, foreach, and future for efficient parallelization.
 - Memory Management:
