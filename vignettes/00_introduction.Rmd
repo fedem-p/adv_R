@@ -28,10 +28,8 @@ A brief repo exploring the main topics to master advanced R programming
 - [Object-Oriented Programming (OOP)](03_object_oriented_programming.html)
 - [Efficient Data Manipulation](04_efficient_data_manipulation.html)
 - [Parallel Computing](05_parallel_computing.html)
-- Memory Management:
-  - Gain insights into efficient memory management in R.
-  - Learn about memory profiling, garbage collection control, and memory allocation techniques.
-- Advanced Visualization:
+- [Memory Management](06_memory_management.html)
+- [Advanced Visualization](07_advanced_visualization.html)
   - Create visually appealing and interactive plots using ggplot2 and plotly.
   - Customize graphical elements to effectively communicate data insights.
 - Package Development:
