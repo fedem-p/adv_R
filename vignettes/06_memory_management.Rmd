@@ -1,0 +1,89 @@
+---
+title: "Memory Management"
+author: "Federico Puppo"
+date: "05/07/2023"
+output:
+  rmarkdown::html_vignette:
+    toc: true
+    toc_depth: 2
+vignette: >
+  %\VignetteIndexEntry{Memory Management}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>"
+)
+```
+
+To master memory management in R, here are some key concepts to consider:
+
+1. **Efficient Data Structures**:
+   - Choose appropriate data structures to minimize memory usage and optimize performance.
+   - Example: Use `data.table` instead of `data.frame` for large datasets.
+
+```R
+library(data.table)
+
+# Create a data.table
+dt <- data.table(x = 1:1000000, y = runif(1000000))
+
+# Print memory usage of data.table
+print(object.size(dt), units = "auto")
+```
+
+2. **Removing Unused Objects**:
+   - Remove unnecessary objects from the workspace to free up memory.
+   - Example: Use the `rm()` function to remove unwanted objects.
+
+```R
+# Create a large object
+x <- runif(1000000)
+
+# Perform computations using 'x'
+
+# Remove 'x' to free up memory
+rm(x)
+```
+
+3. **Garbage Collection**:
+   - Trigger garbage collection to reclaim memory occupied by unused objects.
+   - Example: Use the `gc()` function to manually initiate garbage collection.
+
+```R
+# Create a large object
+x <- runif(1000000)
+
+# Perform computations using 'x'
+
+# Trigger garbage collection
+gc()
+```
+
+4. **Memory Profiling**:
+   - Identify memory-hungry objects and optimize their memory usage.
+   - Example: Use the `pryr` package to profile memory usage.
+
+```R
+library(pryr)
+
+# Create a large object
+x <- runif(1000000)
+
+# Profile memory usage
+mem_used()
+```
+
+5. **Chunking and Streaming**:
+   - Process data in smaller chunks or stream data from disk to reduce memory requirements.
+   - Example: Use the `readr` package to read data in chunks.
+
+```R
+library(readr)
+
+# Read data in chunks
+data <- read_csv_chunked("large_dataset.csv", chunk_size = 10000)
+```
